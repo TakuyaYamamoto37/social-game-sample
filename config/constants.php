@@ -9,4 +9,8 @@ return array(
     'ITEM_TYPE_CRYSTAL' => 1,
     'ITEM_TYPE_CRYSTAL_FREE' => 2,
     'ITEM_TYPE_FRIEND_COIN' => 3,
+    'TUTORIAL_START' => 0,
+    'TUTORIAL_QUEST' => 10,
+    'TUTORIAL_GACHA' => 20,
+    'TUTORIAL_FINISH' => 999,
 );
