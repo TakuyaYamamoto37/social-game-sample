@@ -13,4 +13,7 @@ return array(
     'TUTORIAL_QUEST' => 10,
     'TUTORIAL_GACHA' => 20,
     'TUTORIAL_FINISH' => 999,
+    'QUEST_START' => 1,
+    'QUEST_RETIRE' => 2,
+    'QUEST_CLEAR' => 3,
 );
