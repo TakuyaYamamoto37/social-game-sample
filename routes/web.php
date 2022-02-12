@@ -23,3 +23,5 @@ Route::get('name', 'NameController@ChangeName');
 Route::get('master_data', 'MasterDataController@Get');
 Route::get('registration', 'RegistrationController@Registration');
 Route::get('quest_tutorial', 'QuestController@Tutorial');
+Route::get('quest_start', 'QuestController@Start');
+Route::get('quest_end', 'QuestController@End');

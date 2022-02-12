@@ -3,6 +3,7 @@
 namespace App\Libs;
 
 use App\MasterLoginItem;
+use App\MasterQuest;
 
 class MasterDataService
 {
@@ -12,8 +13,9 @@ class MasterDataService
         chmod(__DIR__ . '/' . $version, 0666);
 
         $master_data_list = array();
-        //マスターデータの種類をいかに随時追加
+        //マスターデータの種類を以下に随時追加
         $master_data_list['master_login_item'] = MasterLoginItem::all();
+        $master_data_list['master_quest'] = MasterQuest::all();
 
         $json = json_encode($master_data_list);
         file_put_contents(__DIR__ . '/' . $version, $json);
