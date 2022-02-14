@@ -4,6 +4,7 @@ namespace App\Libs;
 
 use App\MasterLoginItem;
 use App\MasterQuest;
+use App\MasterCharacter;
 
 class MasterDataService
 {
@@ -14,8 +15,10 @@ class MasterDataService
 
         $master_data_list = array();
         //マスターデータの種類を以下に随時追加
+        //$master_data_list['master_data_version'] = config('constants.MASTER_DATA_VERSION');
         $master_data_list['master_login_item'] = MasterLoginItem::all();
         $master_data_list['master_quest'] = MasterQuest::all();
+        $master_data_list['master_character'] = MasterCharacter::all();
 
         $json = json_encode($master_data_list);
         file_put_contents(__DIR__ . '/' . $version, $json);
