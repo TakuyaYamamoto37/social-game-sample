@@ -26,3 +26,4 @@ Route::get('quest_tutorial', 'QuestController@Tutorial');
 Route::get('quest_start', 'QuestController@Start');
 Route::get('quest_end', 'QuestController@End');
 Route::get('character', 'CharacterController@GetCharacterList');
+Route::get('character_sell', 'CharacterController@SellCharacter');
