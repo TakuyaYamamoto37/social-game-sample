@@ -16,4 +16,7 @@ return array(
     'QUEST_START' => 1,
     'QUEST_RETIRE' => 2,
     'QUEST_CLEAR' => 3,
+    'GACHA_COST_TYPE_CRYSTAL' => 1,
+    'GACHA_COST_TYPE_CRYSTAL_FREE' => 2,
+    'GACHA_COST_TYPE_FRIEND_COIN' => 3,
 );
