@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Libs\MasterDataService;
 use App\UserProfile;
+use App\UserCharacter;
 use App\MasterGacha;
+use App\MasterGachaCharacter;
 
 class GachaController extends Controller
 {
@@ -41,6 +43,96 @@ class GachaController extends Controller
         {
             return $validation;
         }
+
+        //ガチャ商品マスターデータを取得
+        $master_gacha_character_list = MasterGachaCharacter::GetMasterGachaCharacterByGachaId($gacha_id);
+        //マスターデータ存在チェック
+        if (is_null($master_gacha_character_list))
+        {
+            return config('error.ERROR_INVALID_DATA');
+        }
+
+        //取得キャラクターリスト
+        $user_characters = array();
+        for ($i =0; $i < $master_gacha->draw_count; $i++)
+        {
+            $character_id = 0;
+            $weight_sum = 0;
+            foreach ($master_gacha_character_list as $master_gacha_character)
+            {
+                //ウエイトの合計値を計算
+                $weight_sum += $master_gacha_character->weight;
+            }
+            //ウエイトの合計値に対して乱数を設定
+            $random = mt_rand(1, $weight_sum);
+            $sum = 0;
+            foreach ($master_gacha_character_list as $master_gacha_character)
+            {
+                $sum += $master_gacha_character->weight;
+                if ($random <= $sum)
+                {
+                    //キャラクターIDが決定したらループ終了
+                    $character_id = $master_gacha_character->character_id;
+
+                    break;
+                }
+            }
+            $user_character = new UserCharacter;
+            $user_character->user_id = $user_id;
+            $user_character->character_id = $character_id;
+            array_push($user_characters, $user_character);
+        }
+
+        //コストの減算
+        if ($master_gacha->cost_type == config('constanst.GACHA_COST_TYPE_CRYSTAL'))
+        {
+            $user_profile->crystal -= $master_gacha->cost_amount;
+        }
+        else if ($master_gacha->cost_type == config('constants.GACHA_COST_TYPE_CRYSTAL_FREE'))
+        {
+            if ($master_gacha->cost_amount <= $user_profile->crystal_free)
+            {
+                $user_profile->crystal_free -= $master_gacha->cost_amount;
+            }
+            else
+            {
+                $user_profile->crystal -= ($master_gacha->cost_amount - $user_profile->crystal_free);
+                $user_profile->crystal_free = 0;
+            }
+        }
+        else if ($master_gacha->cost_type == config('constants.GACHA_COST_TYPE_FRIEND_COIN'))
+        {
+            $user_profile->friend_coin -= $master_gacha->cost_amount;
+        }
+        else
+        {
+            return config('error.ERROR_INVALID_DATA');
+        }
+
+        //テーブルへの挿入
+        try
+        {
+            foreach ($user_characters as $user_character)
+            {
+                $user_character->save();
+            }
+            $user_profile->save();
+        }
+        catch (\PDOException $e)
+        {
+            return config('error.ERROR_DB_UPDATE');
+        }
+
+        //クライアントへのレスポンス
+        $user_profile = UserProfile::where('user_id', $user_id)->first();
+        $user_character_list = UserCharacter::where('user_id', $user_id)->get();
+        $response = array
+        (
+            "user_profile" => $user_profile,
+            "user_character" => $user_character_list,
+            "gacha_result" => $user_characters,
+        );
+        return json_encode($response);
     }
 
     private function validation($user_profile, $master_gacha)

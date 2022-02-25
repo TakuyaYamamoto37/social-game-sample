@@ -6,6 +6,7 @@ use App\MasterLoginItem;
 use App\MasterQuest;
 use App\MasterCharacter;
 use App\MasterGacha;
+use App\MasterGachaCharacter;
 
 class MasterDataService
 {
@@ -20,6 +21,7 @@ class MasterDataService
         $master_data_list['master_quest'] = MasterQuest::all();
         $master_data_list['master_character'] = MasterCharacter::all();
         $master_data_list['master_gacha'] = MasterGacha::all();
+        $master_data_list['master_gacha_character'] = MasterGachaCharacter::all();
 
         $json = json_encode($master_data_list);
         file_put_contents(__DIR__ . '/' . $version, $json);
