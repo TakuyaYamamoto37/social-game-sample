@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'MASTER_DATA_VERSION' => 23,
+    'MASTER_DATA_VERSION' => 25,
     'CRYSTAL_DEFAULT' => 0,
     'CRYSTAL_FREE_DEFAULT' => 10,
     'FRIEND_COIN_DEFAULT' => 0,
@@ -16,4 +16,7 @@ return array(
     'QUEST_START' => 1,
     'QUEST_RETIRE' => 2,
     'QUEST_CLEAR' => 3,
+    'GACHA_COST_TYPE_CRYSTAL' => 1,
+    'GACHA_COST_TYPE_CRYSTAL_FREE' => 2,
+    'GACHA_COST_TYPE_FRIEND_COIN' => 3,
 );
