@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'MASTER_DATA_VERSION' => 25,
+    'MASTER_DATA_VERSION' => 26,
     'CRYSTAL_DEFAULT' => 0,
     'CRYSTAL_FREE_DEFAULT' => 10,
     'FRIEND_COIN_DEFAULT' => 0,
