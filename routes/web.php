@@ -28,3 +28,4 @@ Route::get('quest_end', 'QuestController@End');
 Route::get('character', 'CharacterController@GetCharacterList');
 Route::get('character_sell', 'CharacterController@SellCharacter');
 Route::get('gacha', 'GachaController@DrawGacha');
+Route::get('shop', 'ShopController@BuyItem');
