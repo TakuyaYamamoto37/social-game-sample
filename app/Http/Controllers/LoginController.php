@@ -7,6 +7,7 @@ use App\Libs\MasterDataService;
 use App\UserProfile;
 use App\UserLogin;
 use App\MasterLoginItem;
+use App\UserPresent;
 
 class LoginController extends Controller
 {
@@ -45,6 +46,8 @@ class LoginController extends Controller
 		//日付の比較
 		$today = date('Y-m-d');
 		$last_login_day = date('Y-m-d', strtotime($user_login->last_login_at));
+
+		$user_present = new UserPresent;
 		if (strtotime($today) !== strtotime($last_login_day))
 		{
 			$user_login->login_day += 1;
@@ -53,6 +56,7 @@ class LoginController extends Controller
 			//アイテムデータがあるか確認
 			if (!is_null($master_login_item))
 			{
+				/*
 				//アイテム付与
 				switch ($master_login_item->item_type)
 				{
@@ -68,6 +72,14 @@ class LoginController extends Controller
 					default:
 						break;
 				}
+				*/
+				//プレゼント作成
+				$user_present->user_id = $user_id;
+				$user_present->item_type = $master_login_item->item_type;
+				$user_present->item_count = $master_login_item->item_count;
+				$user_present->description = 'Loginbonus';
+				//30日後まで受取可能
+				$user_present->limited_at = date('Y-m-d', (time() + (60 * 60 * 24 * 30)));
 			}
 		}
 
@@ -77,7 +89,11 @@ class LoginController extends Controller
 		//データの書き込み
 		try
 		{
-			$user_profile->save();
+			//$user_profile->save();
+			if (isset($user_present->user_id))
+			{
+				$user_present->save();
+			}
 			$user_login->save();
 		}
 		catch (\PDOException $e)
@@ -85,12 +101,16 @@ class LoginController extends Controller
 			return config('error.ERROR_DB_UPDATE');
 		}
 
+		//user_presentテーブルからレコードを取得
+		$user_present_list = UserPresent::where('user_id', $user_id)->get();
+
 		//クライアントへのレスポンス
-		$user_profile = UserProfile::Where('user_id', $user_id)->first();
+		//$user_profile = UserProfile::Where('user_id', $user_id)->first();
 		$user_login = UserLogin::Where('user_id', $user_id)->first();
 		$response = array
 		(
-			"user_profile" => $user_profile,
+			//"user_profile" => $user_profile,
+			"user_present" => $user_present_list,
 			"user_login" => $user_login,
 		);
 
