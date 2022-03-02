@@ -29,3 +29,5 @@ Route::get('character', 'CharacterController@GetCharacterList');
 Route::get('character_sell', 'CharacterController@SellCharacter');
 Route::get('gacha', 'GachaController@DrawGacha');
 Route::get('shop', 'ShopController@BuyItem');
+Route::get('present_list', 'PresentController@GetPresentList');
+Route::get('present', 'PresentController@GetItem');
