@@ -8,6 +8,7 @@ use App\MasterCharacter;
 use App\MasterGacha;
 use App\MasterGachaCharacter;
 use App\MasterShop;
+use App\MasterText;
 
 class MasterDataService
 {
@@ -24,9 +25,9 @@ class MasterDataService
         $master_data_list['master_gacha'] = MasterGacha::all();
         $master_data_list['master_gacha_character'] = MasterGachaCharacter::all();
         $master_data_list['master_shop'] = MasterShop::all();
+        $master_data_list['master_text'] = MasterText::all();
 
-
-        $json = json_encode($master_data_list);
+        $json = json_encode($master_data_list, JSON_UNESCAPED_UNICODE);
         file_put_contents(__DIR__ . '/' . $version, $json);
     }
 

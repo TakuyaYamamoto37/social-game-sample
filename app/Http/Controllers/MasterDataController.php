@@ -8,6 +8,7 @@ use App\MasterQuest;
 use App\MasterCharacter;
 use App\MasterGacha;
 use App\MasterShop;
+use App\MasterText;
 
 class MasterDataController extends Controller
 {
@@ -19,7 +20,7 @@ class MasterDataController extends Controller
 		$master_character = MasterCharacter::GetMasterCharacter();
 		$master_gacha = MasterGacha::GetMasterGacha();
 		$master_shop = MasterShop::GetMasterShop();
-
+		$master_text = MasterText::GetMasterText();
 
 		$response = array(
 			'master_data_version' => config('constants.MASTER_DATA_VERSION'),
@@ -28,8 +29,9 @@ class MasterDataController extends Controller
 			'master_character' => $master_character,
 			'master_gacha' => $master_gacha,
 			'master_shop' => $master_shop,
+			'master_text' => $master_text,
 		);
 
-		return json_encode($response);
+		return json_encode($response, JSON_UNESCAPED_UNICODE);
 	}
 }
